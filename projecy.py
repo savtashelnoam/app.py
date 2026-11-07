@@ -7,19 +7,23 @@ st.set_page_config(page_title="ניתוח דאטה-סט סרטי TMDB", layout="
 st.title("🎬 פרויקט 1: הכרות עם הדאטה-סט")
 st.subheader("יצירתה של תבונה: בחירות קטנות, השפעות גדולות")
 
-# טעינת הנתונים מקישור ישיר לקובץ CSV (למניעת שגיאת קובץ חסר ב-Streamlit Cloud)
+# טעינת הנתונים מקישור ישיר תקין ב-GitHub (כולל טיפול בשגיאות)
 @st.cache_data
 def load_data():
-    url = "https://raw.githubusercontent.com/algoscale/TMDB-5000-Movies-Analysis/master/tmdb_5000_movies.csv"
+    url = "https://raw.githubusercontent.com/algoscale/TMDB-5000-Movie-Dataset-Analysis/master/tmdb_5000_movies.csv"
     return pd.read_csv(url)
 
-df = load_data()
+try:
+    df = load_data()
+except Exception as e:
+    st.error(f"שגיאה בטעינת הנתונים: {e}")
+    st.stop()
 
-# לשוניות באפליקציה לפי 3 סעיפי ההנחיה
+# לשוניות באפליקציה לפי סעיפי ההנחיה
 tab1, tab2, tab3 = st.tabs(["📋 1. הסבר על הדאטה", "🔍 2. מידע על הנתונים", "🎯 3. משתני החיזוי (y, X)"])
 
 # ---------------------------------------------------------
-# סעיף 1: הסבר על הדאטה שנבחר (על מה הוא ומה מייצגת כל שורה)
+# סעיף 1: הסבר על הדאטה שנבחר
 # ---------------------------------------------------------
 with tab1:
     st.header("1. הסבר על הדאטה שנבחר")
